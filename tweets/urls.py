@@ -1,7 +1,10 @@
-from django.urls import path
-from .views import FeedView, TweetCreateView
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from .views import TweetViewSet
+
+router = DefaultRouter()
+router.register(r'tweets', TweetViewSet, basename='tweet')
 
 urlpatterns = [
-    path("feed/", FeedView.as_view()),
-    path("tweets/", TweetCreateView.as_view()),
+    path('', include(router.urls)),
 ]
