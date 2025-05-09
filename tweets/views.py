@@ -21,15 +21,26 @@ class TweetViewSet(ModelViewSet):
     def feed(self, request):
         user = request.user
         if user.is_authenticated:
-            # Buscar os usuários que o usuário está seguindo
-            followed_users = Follow.objects.filter(follower=user).values('following')  # IDs dos usuários seguidos
-            # Adicionar o próprio usuário na busca (tweets do próprio usuário)
-            followed_users_ids = list(followed_users) + [user.id]
-            
-            # Buscar tweets do próprio usuário e dos usuários seguidos
-            tweets = Tweet.objects.filter(user__id__in=followed_users_ids)
+            # Obtém os usuários que o usuário logado segue
+            followed_users = Follow.objects.filter(follower=user).values_list('following', flat=True)
+
+            # Retorna tweets dessas pessoas
+            tweets = Tweet.objects.filter(user__in=followed_users).order_by('-created_at')
         else:
             tweets = Tweet.objects.none()
         
         serializer = self.get_serializer(tweets, many=True)
         return Response(serializer.data)
+
+    @action(detail=False, methods=['get'], url_path='my', permission_classes=[IsAuthenticatedOrReadOnly])
+    def my_tweets(self, request):
+        user = request.user
+        if user.is_authenticated:
+            tweets = Tweet.objects.filter(user=user).order_by('-created_at')
+        else:
+            tweets = Tweet.objects.none()
+
+        serializer = self.get_serializer(tweets, many=True)
+        return Response(serializer.data)
+
+
