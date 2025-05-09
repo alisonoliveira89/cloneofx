@@ -17,6 +17,7 @@ class TweetViewSet(ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
+    # /api/tweets/feed/
     @action(detail=False, methods=['get'], url_path='feed', permission_classes=[IsAuthenticatedOrReadOnly])
     def feed(self, request):
         user = request.user
@@ -32,6 +33,7 @@ class TweetViewSet(ModelViewSet):
         serializer = self.get_serializer(tweets, many=True)
         return Response(serializer.data)
 
+    # /api/tweets/my/
     @action(detail=False, methods=['get'], url_path='my', permission_classes=[IsAuthenticatedOrReadOnly])
     def my_tweets(self, request):
         user = request.user
