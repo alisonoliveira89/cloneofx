@@ -39,7 +39,7 @@ class UserViewSet(ModelViewSet):
             })
         return Response({'detail': 'Credenciais inválidas'}, status=status.HTTP_401_UNAUTHORIZED)
 
-    @action(detail=True, methods=['post'], url_path='follow')
+    @action(detail=True, methods=['post'], url_path='follow', permission_classes=[IsAuthenticated])
     def follow(self, request, pk=None):
         following_user = self.get_object()
         follower_user = request.user
@@ -53,7 +53,7 @@ class UserViewSet(ModelViewSet):
             return Response({"detail": f"Agora você está seguindo {following_user.username}."}, status=status.HTTP_201_CREATED)
         return Response({"detail": "Você já está seguindo esse usuário."}, status=status.HTTP_400_BAD_REQUEST)
 
-    @action(detail=True, methods=['post'], url_path='unfollow')
+    @action(detail=True, methods=['post'], url_path='unfollow', permission_classes=[IsAuthenticated])
     def unfollow(self, request, pk=None):
         following_user = self.get_object()
         follower_user = request.user
