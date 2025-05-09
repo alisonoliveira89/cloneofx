@@ -34,6 +34,8 @@ class UserViewSet(ModelViewSet):
         if user:
             refresh = RefreshToken.for_user(user)
             return Response({
+                'user_id': user.id,
+                'username': user.username,
                 'refresh': str(refresh),
                 'access': str(refresh.access_token),
             })
