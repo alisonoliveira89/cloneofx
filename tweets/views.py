@@ -4,6 +4,8 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from .models import Tweet
 from .serializers import TweetSerializer
+from users.models import CustomUser  # Importando o modelo de usuário
+from users.models import Follow  # Importando o modelo de Follow
 
 class TweetViewSet(ModelViewSet):
     serializer_class = TweetSerializer
@@ -19,9 +21,15 @@ class TweetViewSet(ModelViewSet):
     def feed(self, request):
         user = request.user
         if user.is_authenticated:
-            # Exibe tweets do próprio usuário; você pode expandir para "seguidos"
-            tweets = Tweet.objects.filter(user=user)
+            # Buscar os usuários que o usuário está seguindo
+            followed_users = Follow.objects.filter(follower=user).values('following')  # IDs dos usuários seguidos
+            # Adicionar o próprio usuário na busca (tweets do próprio usuário)
+            followed_users_ids = list(followed_users) + [user.id]
+            
+            # Buscar tweets do próprio usuário e dos usuários seguidos
+            tweets = Tweet.objects.filter(user__id__in=followed_users_ids)
         else:
             tweets = Tweet.objects.none()
+        
         serializer = self.get_serializer(tweets, many=True)
         return Response(serializer.data)

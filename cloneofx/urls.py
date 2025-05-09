@@ -17,8 +17,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+from cloneofx import views
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include('users.urls')), 
-    path('api/', include('tweets.urls')), 
+    path('api/users/', include('users.urls')), 
+    path('api/tweets/', include('tweets.urls')), 
+    path("update_server/", views.update, name="update"),
 ]

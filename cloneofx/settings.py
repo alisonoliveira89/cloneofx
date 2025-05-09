@@ -37,9 +37,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    "rest_framework",               # Django REST Framework
-    "users",                        # App de usuários
-    "tweets",                       # App de tweets
+    'django_extensions',
+    "rest_framework",               
+    "users",                        
+    "tweets",                       
     'corsheaders',
 ]
 
