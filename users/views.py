@@ -10,12 +10,15 @@ from .models import CustomUser, Follow
 from .serializers import UserSerializer
 
 from rest_framework.permissions import AllowAny
+from rest_framework.filters import SearchFilter
 
 
 class UserViewSet(ModelViewSet):
     queryset = CustomUser.objects.all()
     serializer_class = UserSerializer
     permission_classes = [IsAuthenticated]  # Agora requer autenticação
+    filter_backends = [SearchFilter]  
+    search_fields = ['username']      # Buscar só por username
 
     @action(detail=False, methods=['post'], url_path='register', permission_classes=[AllowAny])
     def register(self, request):
