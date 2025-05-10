@@ -82,3 +82,17 @@ class UserViewSet(ModelViewSet):
             return Response({"is_following": is_following})
         except CustomUser.DoesNotExist:
             return Response({"detail": "Usuário não encontrado"}, status=status.HTTP_404_NOT_FOUND)
+    
+    @action(detail=True, methods=['get'], url_path='followers', permission_classes=[IsAuthenticated])
+    def followers(self, request, pk=None):
+        user = self.get_object()
+        followers = CustomUser.objects.filter(following__following=user)
+        serializer = UserSerializer(followers, many=True)
+        return Response(serializer.data)
+
+    @action(detail=True, methods=['get'], url_path='following', permission_classes=[IsAuthenticated])
+    def following(self, request, pk=None):
+        user = self.get_object()
+        following = CustomUser.objects.filter(followers__follower=user)
+        serializer = UserSerializer(following, many=True)
+        return Response(serializer.data)
