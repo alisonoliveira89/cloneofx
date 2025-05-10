@@ -69,3 +69,13 @@ class UserViewSet(ModelViewSet):
             follow.delete()
             return Response({"detail": f"Você deixou de seguir {following_user.username}."}, status=status.HTTP_204_NO_CONTENT)
         return Response({"detail": "Você não está seguindo esse usuário."}, status=status.HTTP_400_BAD_REQUEST)
+
+    @action(detail=True, methods=['get'], url_path='is_following', permission_classes=[IsAuthenticated])
+    def is_following(self, request, pk=None):
+        try:
+            target_user = self.get_object()
+            current_user = request.user
+            is_following = Follow.objects.filter(follower=current_user, following=target_user).exists()
+            return Response({"is_following": is_following})
+        except CustomUser.DoesNotExist:
+            return Response({"detail": "Usuário não encontrado"}, status=status.HTTP_404_NOT_FOUND)
