@@ -2,7 +2,7 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from .models import Tweet
+from .models import Tweet, Like, Comment
 from .serializers import TweetSerializer
 from users.models import CustomUser  # Importando o modelo de usuário
 from users.models import Follow  # Importando o modelo de Follow
