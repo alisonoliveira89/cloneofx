@@ -19,6 +19,9 @@ class TweetSerializer(serializers.ModelSerializer):
         if request and request.user.is_authenticated:
             return obj.likes.filter(user=request.user).exists()
         return False
+        
+    def get_comments_count(self, obj):
+        return obj.comments.count()
 
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:
