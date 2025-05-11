@@ -17,6 +17,10 @@ class TweetViewSet(ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
+    def get_serializer_context(self):
+        return {'request': self.request}
+
+
     # /api/tweets/feed/
     @action(detail=False, methods=['get'], url_path='feed', permission_classes=[IsAuthenticatedOrReadOnly])
     def feed(self, request):
