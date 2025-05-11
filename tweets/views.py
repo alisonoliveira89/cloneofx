@@ -20,6 +20,13 @@ class TweetViewSet(ModelViewSet):
     def get_serializer_context(self):
         return {'request': self.request}
 
+    def destroy(self, request, *args, **kwargs):
+        tweet = self.get_object()
+        if tweet.user != request.user:
+            return Response({'detail': 'Você não pode excluir este tweet.'}, status=403)
+        return super().destroy(request, *args, **kwargs)
+
+
 
     # /api/tweets/feed/
     @action(detail=False, methods=['get'], url_path='feed', permission_classes=[IsAuthenticatedOrReadOnly])
