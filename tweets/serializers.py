@@ -5,10 +5,11 @@ class TweetSerializer(serializers.ModelSerializer):
     username = serializers.CharField(source='user.username', read_only=True)
     likes_count = serializers.SerializerMethodField()
     liked_by_me = serializers.SerializerMethodField()
+    comments_count = serializers.SerializerMethodField()
 
     class Meta:
         model = Tweet
-        fields = ['id', 'user', 'username', 'content', 'created_at', 'likes_count', 'liked_by_me']
+        fields = ['id', 'user', 'username', 'content', 'created_at', 'likes_count', 'liked_by_me', 'comments_count']
         read_only_fields = ['user', 'created_at']
     
     def get_likes_count(self, obj):
