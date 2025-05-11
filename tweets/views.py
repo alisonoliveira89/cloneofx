@@ -45,4 +45,23 @@ class TweetViewSet(ModelViewSet):
         serializer = self.get_serializer(tweets, many=True)
         return Response(serializer.data)
 
+    @action(detail=True, methods=['post'])
+    def like(self, request, pk=None):
+        tweet = self.get_object()
+        like, created = Like.objects.get_or_create(user=request.user, tweet=tweet)
+        if not created:
+            like.delete()
+            return Response({'liked': False})
+        return Response({'liked': True})
+
+    @action(detail=True, methods=['post'])
+    def comment(self, request, pk=None):
+        tweet = self.get_object()
+        comment = Comment.objects.create(
+            user=request.user,
+            tweet=tweet,
+            content=request.data.get('content')
+        )
+        return Response(CommentSerializer(comment).data)
+
 
