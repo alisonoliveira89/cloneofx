@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Tweet
+from .models import Tweet, Like, Comment
 
 class TweetSerializer(serializers.ModelSerializer):
     username = serializers.CharField(source='user.username', read_only=True)
