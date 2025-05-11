@@ -26,7 +26,7 @@ class TweetSerializer(serializers.ModelSerializer):
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
-        fields = ['id', 'user', 'content', 'created_at']
+        fields = ['id', 'user', 'username', 'content', 'created_at']
 
 class LikeSerializer(serializers.ModelSerializer):
     class Meta:
