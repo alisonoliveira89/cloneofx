@@ -68,4 +68,10 @@ class TweetViewSet(ModelViewSet):
         )
         return Response(CommentSerializer(comment).data)
 
+    @action(detail=True, methods=['get'])
+    def comments(self, request, pk=None):
+        tweet = self.get_object()
+        comments = tweet.comments.all().order_by('-created_at')
+        serializer = CommentSerializer(comments, many=True)
+        return Response(serializer.data)
 
