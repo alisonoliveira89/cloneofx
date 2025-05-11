@@ -8,3 +8,13 @@ class TweetSerializer(serializers.ModelSerializer):
         model = Tweet
         fields = ['id', 'user', 'username', 'content', 'created_at']
         read_only_fields = ['user', 'created_at']
+
+class CommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = ['id', 'user', 'content', 'created_at']
+
+class LikeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Like
+        fields = ['id', 'user', 'created_at']
