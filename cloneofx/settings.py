@@ -57,8 +57,8 @@ MIDDLEWARE = [
 
 # Permitir o frontend Next.js
 CORS_ALLOWED_ORIGINS = [
-    "https://<seu-frontend>.vercel.app",  # Se estiver no Vercel
-    "http://localhost:3000",  # Se estiver no desenvolvimento local
+    "https://xclone-jbwmn5817-aosdevelops-projects.vercel.app",  # Vercel
+    "http://localhost:3000",  # Desenvolvimento local
 ]
 
 # Para permitir que o frontend Next.js consuma os tokens:
